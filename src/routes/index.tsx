@@ -1,32 +1,60 @@
 /* eslint-disable no-console */
 import { component$, Resource, useResource$ } from '@builder.io/qwik';
-import { Framework } from '@prisma/client';
-import { tServer } from '~/server/router';
+import {Link} from "@builder.io/qwik-city";
+import {isServer} from "@builder.io/qwik/build";
+import {trpc} from "../client/trpc";
+import {tServer} from "../server/router";
+
 
 export default component$(() => {
-	const itemsResource = useResource$<Framework[]>(() => getFrameworks());
 
+
+	//if u call it like that error will raise after link navigation, test it out
+	// const itemsResource = useResource$<string>(() => getFrameworks());
+
+	//if u call it like that error will also raise after link navigation, test it out
+	// const itemsResource = useResource$<string>(() => {
+	// 	if(isServer){
+	// 		return getFrameworks()
+	// 	}
+	// 	return trpc.framework.list.query('')
+	//
+	// });
+
+
+	const itemsResource = useResource$(async ()=>{
+		if(isServer){
+			const {tServer} = await import("../server/router")
+			return tServer.framework.list('');
+		}
+		return trpc.framework.list.query('')
+
+	})
 	return (
-		<Resource
-			value={itemsResource}
-			onPending={() => <>Loading...</>}
-			onRejected={(error) => <>Error: {error.message}</>}
-			onResolved={(items: Framework[]) => (
-				<div>
-					Records:
-					{items.map((item) => (
-						<>
-							<div>Id: {item.id}</div>
-							<div>Name: {item.name}</div>
-							<hr />
-						</>
-					))}
-				</div>
-			)}
-		/>
+		<div>
+			<Resource
+				value={itemsResource}
+				onPending={()=><h1>Loading</h1>}
+				onRejected={(eror)=> {
+					console.log(eror)
+					return(
+						<h1>Error ac</h1>
+					)
+				}}
+				onResolved={(resp)=>{
+					return (
+						<h1>{resp}</h1>
+					)
+				}}
+			/>
+			<Link
+				href={'/SomeRoute'}
+			>
+				<h1>Go to SomeRoute</h1>
+			</Link>
+		</div>
 	);
 });
 
-export async function getFrameworks(): Promise<Framework[]> {
-	return await tServer.framework.list('');
-}
+
+

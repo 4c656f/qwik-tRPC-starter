@@ -1,56 +1,62 @@
 {
-	"name": "qwik-trpc-starter",
-	"description": "qwik-trpc-starter",
-	"engines": {
-		"node": ">=15.0.0"
-	},
-	"private": true,
-	"scripts": {
-		"build": "qwik build",
-		"build.client": "vite build",
-		"build.preview": "vite build --ssr src/entry.preview.tsx",
-		"build.types": "tsc --incremental --noEmit",
-		"dev": "vite --mode ssr",
-		"dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
-		"fmt": "prettier --write .",
-		"fmt.check": "prettier --check .",
-		"lint": "eslint src/**/*.ts*",
-		"preview": "qwik build preview && vite preview --open",
-		"serve": "echo 'Run \"npm run qwik add\" to install a server adaptor'",
-		"start": "vite --open --mode ssr",
-		"qwik": "qwik",
-		"db-seed": "prisma db seed",
-		"prisma:studio": "prisma studio --schema=./prisma/schema.prisma",
-		"migrate-sqlite": "prisma migrate dev --name init --schema=./prisma/schema.prisma",
-		"generate-sqlite": "prisma generate --schema=./prisma/schema.prisma",
-		"qwik-trpc:dev": "run-s migrate-sqlite generate-sqlite db-seed && npm run dev"
-	},
-	"prisma": {
-		"seed": "tsx prisma/seed.ts"
-	},
-	"devDependencies": {
-		"@builder.io/qwik": "0.14.0",
-		"@builder.io/qwik-city": "0.0.127",
-		"@types/eslint": "8.4.10",
-		"@types/node": "latest",
-		"@typescript-eslint/eslint-plugin": "5.44.0",
-		"@typescript-eslint/parser": "5.44.0",
-		"eslint": "8.28.0",
-		"eslint-plugin-qwik": "0.14.0",
-		"node-fetch": "3.3.0",
-		"npm-run-all": "^4.1.5",
-		"prettier": "2.8.0",
-		"tsx": "^3.12.1",
-		"typescript": "4.9.3",
-		"vite": "3.2.4",
-		"vite-tsconfig-paths": "3.6.0"
-	},
-	"dependencies": {
-		"@prisma/client": "^4.6.1",
-		"@trpc/client": "^10.1.0",
-		"@trpc/server": "^10.1.0",
-		"prisma": "^4.6.1",
-		"superjson": "^1.11.0",
-		"zod": "^3.19.1"
-	}
+  "name": "qwik-trpc-starter",
+  "description": "qwik-trpc-starter",
+  "engines": {
+    "node": ">=15.0.0"
+  },
+  "private": true,
+  "scripts": {
+    "build": "qwik build",
+    "build.client": "vite build",
+    "build.preview": "vite build --ssr src/entry.preview.tsx",
+    "build.server": "vite build -c adaptors/express/vite.config.ts",
+    "build.types": "tsc --incremental --noEmit",
+    "db-seed": "prisma db seed",
+    "deploy": "node server/entry.express",
+    "dev": "vite --mode ssr",
+    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "fmt": "prettier --write .",
+    "fmt.check": "prettier --check .",
+    "generate-sqlite": "prisma generate --schema=./prisma/schema.prisma",
+    "lint": "eslint src/**/*.ts*",
+    "migrate-sqlite": "prisma migrate dev --name init --schema=./prisma/schema.prisma",
+    "preview": "qwik build preview && vite preview --open",
+    "prisma:studio": "prisma studio --schema=./prisma/schema.prisma",
+    "qwik-trpc:dev": "run-s migrate-sqlite generate-sqlite db-seed && npm run dev",
+    "serve": "echo 'Run \"npm run qwik add\" to install a server adaptor'",
+    "start": "vite --open --mode ssr",
+    "qwik": "qwik"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@builder.io/qwik": "0.14.0",
+    "@builder.io/qwik-city": "0.0.127",
+    "@types/compression": "^1.7.2",
+    "@types/eslint": "8.4.10",
+    "@types/express": "4.17.13",
+    "@types/node": "latest",
+    "@typescript-eslint/eslint-plugin": "5.44.0",
+    "@typescript-eslint/parser": "5.44.0",
+    "compression": "^1.7.4",
+    "eslint": "8.28.0",
+    "eslint-plugin-qwik": "0.14.0",
+    "express": "4.17.3",
+    "node-fetch": "3.3.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "2.8.0",
+    "tsx": "^3.12.1",
+    "typescript": "4.9.3",
+    "vite": "3.2.4",
+    "vite-tsconfig-paths": "3.6.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.6.1",
+    "@trpc/client": "^10.1.0",
+    "@trpc/server": "^10.1.0",
+    "prisma": "^4.6.1",
+    "superjson": "^1.11.0",
+    "zod": "^3.19.1"
+  }
 }
